@@ -9,3 +9,26 @@
 .text-body-md            { font-size: 16px; font-weight: 400; line-height: 1.6; }
 .text-label-sm           { font-size: 12px; font-weight: 600; letter-spacing: 0.08em;  line-height: 1; }
 
+html, body {
+  overflow-x: hidden;
+}
+
+/* Mobile */
+@media (max-width: 639px) {
+  .text-display {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+}
+
+/* Tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .text-display {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+}

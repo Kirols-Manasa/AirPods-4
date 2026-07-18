@@ -10,11 +10,11 @@ export default function Hero() {
         {/* Text Content — centered */}
         <div className="flex flex-col items-center text-center gap-4">
 
-         <p className="text-display">
-  AirPods 4.
+   <p className="text-display">
+  AirPods 4
 </p>
 
-          <h1 className="text-display font-semibold text-black/70">
+<h1 className="text-display font-semibold text-black/70">
   Iconic. Now supersonic.
 </h1>
 
@@ -37,7 +37,7 @@ export default function Hero() {
     alt="AirPods 4"
     width={800}
     height={600}
-    className="w-full max-w-[600px] sm:max-w-[700px] lg:max-w-[500px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.25)]"
+    className="w-full max-w-[600px] sm:max-w-[700px] lg:max-w-[500px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
     priority
   />
 </div>
