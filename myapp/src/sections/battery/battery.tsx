@@ -2,7 +2,7 @@
 
 export default function Battery() {
   return (
-    <section className="w-full bg-[#f9f9f9] px-8 lg:px-16 py-20">
+    <section className="w-full bg-[#f9f9f9] px-8 lg:px-16 py-20 relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
 
         {/* Left */}
@@ -24,8 +24,8 @@ export default function Battery() {
           <div className="flex flex-col gap-4">
 
             {/* Fast charging */}
-             <div className="rounded-2xl px-5 py-5 flex items-center gap-4 border border-black/15 hover:border-black/40 transition-all duration-50 cursor-default"
-  style={{ background: "transparent" }}>
+            <div className="rounded-2xl px-5 py-5 flex items-center gap-4 border border-black/15 hover:border-black/40 transition-all duration-50 cursor-default"
+              style={{ background: "transparent" }}>
               <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/icon/lightning.png"
@@ -44,8 +44,8 @@ export default function Battery() {
             </div>
 
             {/* Universal Charging */}
-             <div className="rounded-2xl px-5 py-5 flex items-center gap-4 border border-black/15 hover:border-black/40 transition-all duration-50 cursor-default"
-  style={{ background: "transparent" }}>
+            <div className="rounded-2xl px-5 py-5 flex items-center gap-4 border border-black/15 hover:border-black/40 transition-all duration-50 cursor-default"
+              style={{ background: "transparent" }}>
               <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
                 <Image
                   src="/icon/wireless-charger.png"
@@ -87,6 +87,11 @@ export default function Battery() {
         </div>
 
       </div>
+
+      {/* ✅ fade للأبيض في الأسفل */}
+      <div className="absolute bottom-0 left-0 w-full h-32 z-10"
+        style={{ background: "linear-gradient(to bottom, transparent, #ffffff)" }} />
+
     </section>
   );
 }

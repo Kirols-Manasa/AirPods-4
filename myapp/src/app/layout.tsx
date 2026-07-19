@@ -2,8 +2,10 @@
 
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
+import LinesScroll from "@/LinesScroll";
 import GridOverlay from "@/GridOverlay";
 import Header from "@/layout/Header/Header";
+import Footer from "@/sections/footer/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,12 +18,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" dir="ltr">
-      <body className={inter.className}>
-         <Header />
-        <TRPCReactProvider>{children}</TRPCReactProvider>
-        <GridOverlay />
-       
-      </body>
+    <body className={inter.className}>
+  <LinesScroll>
+    <Header />
+    <TRPCReactProvider>{children}</TRPCReactProvider>
+    <GridOverlay />
+  </LinesScroll>
+  <Footer />
+</body>
     </html>
   );
 }

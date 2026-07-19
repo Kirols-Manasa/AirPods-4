@@ -5,6 +5,8 @@ import Details from "@/sections/details/details";
 import Women from "@/sections/women/women";
 import Battery from "@/sections/battery/battery";
 import Girls2 from "@/sections/girls2/girls2";
+import Cart from "@/sections/cart/cart";
+import Tabl from "@/sections/tabl/tabl";
 export default function Home() {
   return (
     <main>
@@ -15,6 +17,8 @@ export default function Home() {
     <Women />
    <Battery />
    <Girls2 />
+    <Cart />
+    <Tabl />
     </main>
   );
 }
