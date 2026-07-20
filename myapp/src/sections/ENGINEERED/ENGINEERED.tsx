@@ -69,7 +69,7 @@ export default function Engineered() {
               relative
             ">
               <Image
-                src="/images/hello.jpg"
+                src="/images/hello.webp"
                 alt="Acoustics"
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 58vw"
@@ -87,7 +87,7 @@ export default function Engineered() {
                 relative
               ">
                 <Image
-                  src="/images/airpod.jpg"
+                  src="/images/airpod.webp"
                   alt="AirPod"
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 29vw"
@@ -101,7 +101,7 @@ export default function Engineered() {
                 relative
               ">
                 <Image
-                  src="/images/H2.jpg"
+                  src="/images/H2.webp"
                   alt="H2 Chip"
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 29vw"

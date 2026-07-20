@@ -98,7 +98,7 @@ export default function Man() {
           "
         >
           <Image
-            src="/images/man.png"
+            src="/images/man.webp"
             alt="Personalized Spatial Audio"
             fill
             className="object-cover object-left"

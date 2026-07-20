@@ -28,7 +28,7 @@ export default function Battery() {
               style={{ background: "transparent" }}>
               <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/icon/lightning.png"
+                  src="/icon/lightning.webp"
                   alt="Fast charging"
                   width={22}
                   height={22}
@@ -48,7 +48,7 @@ export default function Battery() {
               style={{ background: "transparent" }}>
               <div className="w-9 h-9 flex items-center justify-center flex-shrink-0">
                 <Image
-                  src="/icon/wireless-charger.png"
+                  src="/icon/wireless-charger.webp"
                   alt="Universal Charging"
                   width={22}
                   height={22}
@@ -69,7 +69,7 @@ export default function Battery() {
         {/* Right */}
         <div className="flex flex-col items-center lg:items-end gap-8">
           <Image
-            src="/images/caver.png"
+            src="/images/caver.webp"
             alt="AirPods Case"
             width={350}
             height={350}
@@ -77,7 +77,7 @@ export default function Battery() {
             style={{ filter: "drop-shadow(0px 20px 40px rgba(0,0,0,0.35))" }}
           />
           <Image
-            src="/images/battary.jpg"
+            src="/images/battary.webp"
             alt="Charger"
             width={450}
             height={450}

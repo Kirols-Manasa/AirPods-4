@@ -95,7 +95,7 @@ export default function Hero() {
             className="mt-12 sm:mt-16 lg:mt-20 w-full flex justify-center"
           >
             <Image
-              src="/images/Airpods.png"
+              src="/images/Airpods.webp"
               alt="AirPods 4"
               width={800}
               height={600}

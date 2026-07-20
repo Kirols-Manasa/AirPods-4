@@ -10,7 +10,7 @@ export default function Women() {
   {/* Image */}
   <div className="w-full max-w-2xl relative z-10">
     <Image
-      src="/images/women.png"
+      src="/images/women.webp"
       alt="Interact with Siri"
       width={1280}
       height={1400}

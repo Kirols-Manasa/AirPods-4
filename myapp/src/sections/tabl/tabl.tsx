@@ -26,7 +26,7 @@ export default function Tabl() {
 
           {/* الصورة */}
           <img
-            src="/images/tabl.jpg"
+            src="/images/tabl.webp"
             alt="AirPods engraving"
             className="w-full max-w-[900px] object-contain"
           />

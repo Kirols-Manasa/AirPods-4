@@ -7,7 +7,7 @@
         style={{ minHeight: "120svh" }}
       >
         <Image
-          src="/images/girls.jpg"
+          src="/images/girls.webp"
           alt="For your ears only"
           fill
           sizes="100vw"

@@ -6,7 +6,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 const cards = [
   {
     id: 1,
-    image: "/images/helo.jpg",
+    image: "/images/helo.webp",
     alt: "A roaring leap in capabilities",
     boldText: "A roaring leap in capabilities.",
     description:
@@ -14,7 +14,7 @@ const cards = [
   },
   {
     id: 2,
-    image: "/images/cart.jpg",
+    image: "/images/cart.webp",
     alt: "Hang on every word",
     boldText: "Hang on every word.",
     description:
@@ -22,7 +22,7 @@ const cards = [
   },
   {
     id: 3,
-    image: "/images/ohh.jpg",
+    image: "/images/ohh.webp",
     alt: "Enjoy every note, beat, and vibe",
     boldText: "Enjoy every note, beat, and vibe.",
     description:
@@ -30,7 +30,7 @@ const cards = [
   },
   {
     id: 4,
-    image: "/images/bnt.jpg",
+    image: "/images/bnt.webp",
     alt: "Calibrates music to your ears",
     boldText: "Calibrates music to your ears.",
     description:
@@ -38,7 +38,7 @@ const cards = [
   },
   {
     id: 5,
-    image: "/images/zoom.jpg",
+    image: "/images/zoom.webp",
     alt: "Real talk in real time",
     boldText: "Real talk in real time.",
     description:

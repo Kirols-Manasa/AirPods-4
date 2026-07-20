@@ -24,7 +24,7 @@ export default function Details() {
           <div className="sm:col-span-7 bg-[#F5F5F7] rounded-3xl flex flex-col items-center justify-between py-14 px-10 min-h-[480px]">
             <div className="flex-1 flex items-center justify-center">
               <Image
-                src="/images/5.jpg"
+                src="/images/5.webp"
                 alt="Physical fit-ness"
                 width={260}
                 height={320}
@@ -43,7 +43,7 @@ export default function Details() {
           <div className="sm:col-span-5 bg-[#F5F5F7] rounded-3xl flex flex-col items-center justify-between py-14 px-10 min-h-[480px]">
             <div className="flex-1 flex items-center justify-center">
               <Image
-                src="/images/2.jpg"
+                src="/images/2.webp"
                 alt="Refined Acoustic Venting"
                 width={220}
                 height={220}
@@ -65,7 +65,7 @@ export default function Details() {
           <div className="bg-[#F5F5F7] rounded-3xl flex flex-col items-center justify-between py-12 px-10 min-h-[360px]">
             <div className="flex-1 flex items-center justify-center">
               <Image
-                src="/images/1.jpg"
+                src="/images/1.webp"
                 alt="Contoured for every ear"
                 width={180}
                 height={180}
@@ -80,7 +80,7 @@ export default function Details() {
           <div className="bg-[#F5F5F7] rounded-3xl flex flex-col items-center justify-between py-12 px-10 min-h-[360px]">
             <div className="flex-1 flex items-center justify-center">
               <Image
-                src="/images/6.jpg"
+                src="/images/6.webp"
                 alt="Dust, sweat, and water resistant"
                 width={180}
                 height={180}
@@ -95,7 +95,7 @@ export default function Details() {
           <div className="bg-[#F5F5F7] rounded-3xl flex flex-col items-center justify-between py-12 px-10 min-h-[360px]">
             <div className="flex-1 flex items-center justify-center">
               <Image
-                src="/images/3.jpg"
+                src="/images/3.webp"
                 alt="Precision machined geometry"
                 width={180}
                 height={180}
@@ -127,7 +127,7 @@ export default function Details() {
             </p>
           </div>
           <Image
-            src="/images/4.jpg"
+            src="/images/4.webp"
             alt="Force sensor stem"
             width={180}
             height={240}
