@@ -6,10 +6,21 @@ import Container from "@/Container";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+// ============================
+// استخدمنا الـ Context عشان نعرف امتى الـ Intro خلص
+// ============================
+import { useIntro } from "@/context/IntroContext";
+
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { introComplete } = useIntro();
 
   useEffect(() => {
+    // ============================
+    // الـ animation مش بتبدأ إلا لما introComplete تبقى true
+    // ============================
+    if (!introComplete) return;
+
     const ctx = gsap.context(() => {
       const reveals = containerRef.current?.querySelectorAll("[data-reveal]");
       const cta = containerRef.current?.querySelector<HTMLElement>("[data-hero-cta]");
@@ -44,14 +55,12 @@ export default function Hero() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [introComplete]); // ← بيشتغل لما introComplete تتغير لـ true
 
   return (
     <section id="hero" className="w-full py-8 sm:py-12 lg:py-16">
       <Container>
-        {/* ✅ ref على div واحد يشمل النص والصورة مع بعض */}
         <div ref={containerRef}>
-
           <div className="flex flex-col items-center text-center gap-4">
             <div className="overflow-hidden">
               <p
@@ -88,7 +97,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ✅ الصورة جوا نفس الـ ref div */}
           <div
             data-hero-image
             style={{ opacity: 0 }}
@@ -103,7 +111,6 @@ export default function Hero() {
               priority
             />
           </div>
-
         </div>
       </Container>
     </section>
