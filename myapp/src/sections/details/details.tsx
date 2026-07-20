@@ -2,7 +2,7 @@
 
 export default function Details() {
   return (
-    <section className="w-full py-12 px-6 lg:px-10">
+    <section id="details" className="w-full py-12 px-6 lg:px-10">
 
       {/* Header */}
       <div className="text-center mb-8">

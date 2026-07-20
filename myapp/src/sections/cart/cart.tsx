@@ -47,7 +47,6 @@ const cards = [
 ];
 
 const DARK = "#05050a";
-const FADE = "#6b8597"; // ← لون الصورة الرمادي-أزرق
 
 export default function Cart() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -101,7 +100,6 @@ export default function Cart() {
     moved.current = false;
     startX.current = e.pageX;
     scrollStart.current = scrollRef.current?.scrollLeft ?? 0;
-    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
   };
   const onMouseMove = (e: React.MouseEvent) => {
     if (!isDragging.current || !scrollRef.current) return;
@@ -111,7 +109,6 @@ export default function Cart() {
   };
   const onMouseUp = () => {
     isDragging.current = false;
-    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
   };
 
   return (
@@ -141,6 +138,10 @@ export default function Cart() {
           background: #1c1c1e;
           border-radius: clamp(14px, 1.4vw, 20px);
           height: clamp(240px, calc((100vw - 56px) / 3 * 1.35), 520px);
+          cursor: grab;
+        }
+        .cart-card-img:active {
+          cursor: grabbing;
         }
         @media (min-width: 768px) {
           .cart-card-img { height: clamp(270px, calc((100vw - 88px) / 3 * 1.35), 520px); }
@@ -161,6 +162,9 @@ export default function Cart() {
           font-size: 11px;
           font-weight: 400;
           letter-spacing: 0;
+          cursor: default;
+          user-select: text;
+          -webkit-user-select: text;
         }
         @media (min-width: 768px) {
           .cart-card-caption { font-size: 12px; letter-spacing: 0.01em; }
@@ -201,24 +205,16 @@ export default function Cart() {
         @media (min-width: 1024px) { .cart-arrow-bar { padding-right: 48px; } }
         @media (min-width: 1280px) { .cart-arrow-bar { padding-right: 64px; } }
 
-        /* ── Gradients بلون الصورة ── */
-        .cart-grad {
-          position: absolute;
-          left: 0; right: 0;
-          height: clamp(60px, 8vw, 120px);
-          pointer-events: none;
-          z-index: 10;
-        }
-        .cart-grad-top    { top: 0;    background: linear-gradient(to bottom, #6b8597 0%, transparent 100%); }
-        .cart-grad-bottom { bottom: 0; background: linear-gradient(to top,    #6b8597 0%, transparent 100%); }
+        
+
+        
       `}</style>
 
       <section
         className="cart-section"
         style={{ width: "100%", position: "relative", overflow: "hidden", background: DARK }}
       >
-        <div aria-hidden="true" className="cart-grad cart-grad-top" />
-        <div aria-hidden="true" className="cart-grad cart-grad-bottom" />
+       
 
         <div
           ref={scrollRef}
@@ -232,7 +228,6 @@ export default function Cart() {
             overflowX: "auto",
             gap: "12px",
             paddingBottom: "clamp(20px, 2.5vw, 36px)",
-            cursor: "grab",
             WebkitOverflowScrolling: "touch",
             position: "relative",
             zIndex: 1,

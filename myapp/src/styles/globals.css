@@ -13,6 +13,52 @@ html, body {
   overflow-x: hidden;
 }
 
+/* ─── Hide Native Scrollbar (custom one handled via JS) ──────── */
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* Chrome / Edge / Safari */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* Custom scrollbar styles (injected by customScrollbar.js) */
+.custom-scrollbar-track {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  background: transparent;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.custom-scrollbar-thumb {
+  position: absolute;
+  right: 0;
+  width: 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+  transition: background 0.2s ease, opacity 0.3s ease;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.custom-scrollbar-thumb:hover,
+.custom-scrollbar-thumb.visible {
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 1;
+}
+
+/* ────────────────────────────────────────────────────────────── */
+
 /* Mobile */
 @media (max-width: 639px) {
   .text-display {
@@ -32,6 +78,7 @@ html, body {
     line-height: 1.15;
   }
 }
+
 .siri-text {
   font-size: 16px;
   font-weight: 400;
@@ -39,5 +86,3 @@ html, body {
   color: rgba(0,0,0,0.5);
   text-align: center;
 }
- 
- 

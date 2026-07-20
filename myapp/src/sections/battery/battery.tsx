@@ -2,7 +2,7 @@
 
 export default function Battery() {
   return (
-    <section className="w-full bg-[#f9f9f9] px-8 lg:px-16 py-20 relative overflow-hidden">
+    <section id="battery" className="w-full bg-[#f9f9f9] px-8 lg:px-16 py-20 relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-16">
 
         {/* Left */}
