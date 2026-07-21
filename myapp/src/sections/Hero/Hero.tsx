@@ -3,59 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/Container";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
 
 // ============================
-// استخدمنا الـ Context عشان نعرف امتى الـ Intro خلص
+// الـ animation في ملف منفصل
 // ============================
-import { useIntro } from "@/context/IntroContext";
+import { useHeroAnimation } from "./Animation";
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const { introComplete } = useIntro();
-
-  useEffect(() => {
-    // ============================
-    // الـ animation مش بتبدأ إلا لما introComplete تبقى true
-    // ============================
-    if (!introComplete) return;
-
-    const ctx = gsap.context(() => {
-      const reveals = containerRef.current?.querySelectorAll("[data-reveal]");
-      const cta = containerRef.current?.querySelector<HTMLElement>("[data-hero-cta]");
-      const image = containerRef.current?.querySelector<HTMLElement>("[data-hero-image]");
-
-      if (!cta || !image) return;
-
-      const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
-
-      reveals?.forEach((el, i) => {
-        tl.fromTo(
-          el,
-          { clipPath: "inset(0 100% 0 0)", x: -14, skewX: -4 },
-          { clipPath: "inset(0 0% 0 0)", x: 0, skewX: 0, duration: 0.95 },
-          i * 0.16
-        );
-      });
-
-      tl.fromTo(
-        cta,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
-        "-=0.3"
-      );
-
-      tl.fromTo(
-        image,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
-        0.2
-      );
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [introComplete]); // ← بيشتغل لما introComplete تتغير لـ true
+  const { containerRef } = useHeroAnimation();
 
   return (
     <section id="hero" className="w-full py-8 sm:py-12 lg:py-16">

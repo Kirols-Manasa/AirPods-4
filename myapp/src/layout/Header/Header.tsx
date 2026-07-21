@@ -15,7 +15,16 @@ const links = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { headerRef, headerClass, textColor, isScrolled, activeSection } = useHeader();
+  const {
+    headerRef,
+    brandRef,
+    addNavLink,
+    buyBtnRef,
+    headerClass,
+    textColor,
+    isScrolled,
+    activeSection,
+  } = useHeader();
 
   const isLight = open && !isScrolled;
   const activeTextColor = isLight ? "text-black" : textColor;
@@ -45,8 +54,9 @@ export default function Header() {
     []
   );
 
-  const handleClose = useCallback(() => setOpen(false), []);
+  const handleClose  = useCallback(() => setOpen(false), []);
   const handleToggle = useCallback(() => setOpen((v) => !v), []);
+
   const headerBgOverride = isLight
     ? "bg-white/80 backdrop-blur-md border-b border-black/10"
     : "";
@@ -59,7 +69,12 @@ export default function Header() {
       <Container>
         <div className="flex items-center justify-between py-3 sm:py-4">
 
-          <span className={`text-[15px] sm:text-[17px] lg:text-[19px] xl:text-[20px] font-semibold transition-colors duration-300 ${activeTextColor}`}>
+          {/* Brand */}
+          <span
+            ref={brandRef}
+            className={`text-[15px] sm:text-[17px] lg:text-[19px] xl:text-[20px] font-semibold transition-colors duration-300 ${activeTextColor}`}
+            style={{ willChange: "clip-path" }}
+          >
             AirPods 4
           </span>
 
@@ -73,13 +88,15 @@ export default function Header() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    ref={addNavLink}
                     onClick={(e) => scrollToSection(e, link.href)}
                     className={`
                       text-[12px] lg:text-[13px] xl:text-[14px]
                       transition-[color,opacity] duration-300
                       ${activeTextColor}
-                        ${isActive ? "opacity-100 font-bold" : "opacity-40 hover:opacity-50"}
+                      ${isActive ? "opacity-100 font-bold" : "opacity-40 hover:opacity-50"}
                     `}
+                    style={{ willChange: "clip-path, opacity" }}
                   >
                     {link.label}
                   </Link>
@@ -87,17 +104,21 @@ export default function Header() {
               })}
             </nav>
 
+            {/* Buy button */}
             <Link
+              ref={buyBtnRef}
               href="#"
               className={`hidden sm:flex items-center px-4 sm:px-5 lg:px-6 py-1.5 lg:py-2 text-[12px] lg:text-[13px] xl:text-[14px] rounded-full hover:opacity-80 transition-all duration-300 border ${
                 isDarkButton
                   ? "bg-black text-white border-black"
                   : "bg-white text-black border-white"
               }`}
+              style={{ willChange: "clip-path, opacity" }}
             >
               Buy
             </Link>
 
+            {/* Mobile toggle */}
             <button
               className={`sm:hidden p-1 cursor-pointer transition-colors duration-300 ${activeTextColor}`}
               onClick={handleToggle}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect, useCallback } from "react";
+import CartAnimation from "./Animation";   // ← الـ animation component
 
 const cards = [
   {
@@ -117,6 +118,11 @@ export default function Cart() {
         .cart-scroll::-webkit-scrollbar { display: none; }
         .cart-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* ── ضروري للـ clip-path animation ── */
+        [data-card] { will-change: clip-path; }
+        [data-card] img { will-change: transform, filter; }
+        .cart-card-caption { will-change: filter, opacity, transform; }
+
         .cart-card {
           flex-shrink: 0;
           width: clamp(180px, calc((100vw - 56px) / 3), 400px);
@@ -139,6 +145,8 @@ export default function Cart() {
           border-radius: clamp(14px, 1.4vw, 20px);
           height: clamp(240px, calc((100vw - 56px) / 3 * 1.35), 520px);
           cursor: grab;
+          /* overflow hidden ضروري عشان الـ parallax متبانش بره الكارت */
+          overflow: hidden;
         }
         .cart-card-img:active {
           cursor: grabbing;
@@ -204,18 +212,15 @@ export default function Cart() {
         @media (min-width: 768px)  { .cart-arrow-bar { padding-right: 32px; } }
         @media (min-width: 1024px) { .cart-arrow-bar { padding-right: 48px; } }
         @media (min-width: 1280px) { .cart-arrow-bar { padding-right: 64px; } }
-
-        
-
-        
       `}</style>
+
+      {/* ── Animation component — لا يرندر أي HTML ── */}
+      <CartAnimation />
 
       <section
         className="cart-section"
         style={{ width: "100%", position: "relative", overflow: "hidden", background: DARK }}
       >
-       
-
         <div
           ref={scrollRef}
           className="cart-scroll"

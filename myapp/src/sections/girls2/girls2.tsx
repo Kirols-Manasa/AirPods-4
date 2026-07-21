@@ -1,28 +1,38 @@
- import Image from "next/image";
- export default function Girls2() {
+ "use client";
+
+import Image from "next/image";
+import { useGirls2Animation } from "./Animation";
+
+export default function Girls2() {
+  const { sectionRef } = useGirls2Animation();
+
   return (
-    <div className="w-full overflow-hidden">
-      <section
-        className="relative w-full mt-16 sm:mt-24 lg:mt-32"
-        style={{ minHeight: "120svh" }}
-      >
-        <Image
-          src="/images/girls.webp"
-          alt="For your ears only"
-          fill
-          sizes="100vw"
-          className="object-cover object-center sm:object-top"
-          priority
-        />
+  <div className="w-full overflow-hidden bg-white">
+  <section
+    ref={sectionRef}
+    className="relative w-full mt-16 sm:mt-24 lg:mt-32"
+    style={{ minHeight: "120svh", backgroundColor: "#ffffff" }}
+  >
+        {/* الصورة */}
+        <div data-image className="absolute inset-0">
+          <Image
+            src="/images/girls.webp"
+            alt="For your ears only"
+            fill
+            sizes="100vw"
+            className="object-cover object-center sm:object-top"
+            priority
+          />
+        </div>
 
         {/* fade فوق */}
-        <div
-          className="absolute top-0 left-0 w-full z-10"
-          style={{
-            height: "30%",
-            background: "linear-gradient(to bottom, #ffffff, transparent)",
-          }}
-        />
+<div
+  className="absolute top-0 left-0 w-full z-10"
+  style={{
+    height: "35%", // بدل 30%
+    background: "linear-gradient(to bottom, #ffffff, transparent)",
+  }}
+/>
 
         {/* fade تحت */}
         <div
@@ -33,34 +43,39 @@
           }}
         />
 
-        {/* النص فوق الصورة */}
-         <div className="absolute -top-8 sm:top-0 lg:-top-32 left-0 w-full z-20 flex flex-col items-center px-4 sm:px-6">
+        {/* النص فوق */}
+        <div className="absolute -top-8 sm:top-0 lg:-top-32 left-0 w-full z-20 flex flex-col items-center px-4 sm:px-6">
 
-          {/* label */}
-          <p className="text-label-sm text-black/50 uppercase mb-2 sm:mb-4">
+          <p
+            data-label
+            style={{ clipPath: "inset(0 100% 0 0)" }}
+            className="text-label-sm text-black/50 uppercase mb-2 sm:mb-4"
+          >
             Personalized listening
           </p>
 
-          {/* headline */}
           <h2
-            className="text-black mb-3 sm:mb-6 text-center font-bold"
+            data-headline
             style={{
+              clipPath: "inset(0 100% 0 0)",
               fontSize: "clamp(22px, 5vw, 72px)",
               letterSpacing: "-0.04em",
               lineHeight: 1.1,
             }}
+            className="text-black mb-3 sm:mb-6 text-center font-bold"
           >
             For your ears only.
           </h2>
 
-          {/* description */}
           <p
-            className="text-black/60 text-center mx-auto"
+            data-description
             style={{
+              clipPath: "inset(0 0 100% 0)",
               fontSize: "clamp(12px, 3.5vw, 16px)",
               maxWidth: "min(90%, 560px)",
               lineHeight: 1.5,
             }}
+            className="text-black/60 text-center mx-auto"
           >
             AirPods 4 feature next-generation Adaptive EQ, which customizes a
             sound signature for your unique ear geometry and fit. And
@@ -69,12 +84,15 @@
           </p>
         </div>
 
-        {/* الكلام التحت */}
+        {/* الـ features تحت */}
         <div className="absolute bottom-4 sm:bottom-8 left-0 w-full z-20 px-3 sm:px-8 lg:px-16">
           <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-10">
 
-            {/* 1 */}
-            <div className="flex flex-row gap-2 items-start">
+            <div
+              data-feature
+              style={{ clipPath: "inset(0 100% 0 0)" }}
+              className="flex flex-row gap-2 items-start"
+            >
               <div
                 className="flex-shrink-0 mt-0.5"
                 style={{ width: "clamp(18px, 5vw, 32px)", height: "clamp(18px, 5vw, 32px)" }}
@@ -94,8 +112,11 @@
               </p>
             </div>
 
-            {/* 2 */}
-            <div className="flex flex-row gap-2 items-start">
+            <div
+              data-feature
+              style={{ clipPath: "inset(0 100% 0 0)" }}
+              className="flex flex-row gap-2 items-start"
+            >
               <div
                 className="flex-shrink-0 mt-0.5"
                 style={{ width: "clamp(18px, 5vw, 32px)", height: "clamp(18px, 5vw, 32px)" }}
@@ -113,8 +134,11 @@
               </p>
             </div>
 
-            {/* 3 */}
-            <div className="flex flex-row gap-2 items-start">
+            <div
+              data-feature
+              style={{ clipPath: "inset(0 100% 0 0)" }}
+              className="flex flex-row gap-2 items-start"
+            >
               <div
                 className="flex-shrink-0 mt-0.5"
                 style={{ width: "clamp(18px, 5vw, 32px)", height: "clamp(18px, 5vw, 32px)" }}
