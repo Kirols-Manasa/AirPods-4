@@ -1,13 +1,13 @@
- "use client";
+ // cart.tsx
+"use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect, useCallback } from "react";
-import CartAnimation from "./Animation";   // ← الـ animation component
+import { useCartAnimation } from "./Animation";
 
 const cards = [
   {
     id: 1,
-    image: "/images/helo.webp",
+    image: "/images/cart.webp",
     alt: "A roaring leap in capabilities",
     boldText: "A roaring leap in capabilities.",
     description:
@@ -15,11 +15,11 @@ const cards = [
   },
   {
     id: 2,
-    image: "/images/cart.webp",
+    image: "/images/helo.webp",
     alt: "Hang on every word",
     boldText: "Hang on every word.",
     description:
-      "Using advanced computational audio, Voice Isolation minimizes background noise while clarifying the sound of your voice — even in loud or windy conditions. And with studio-quality audio recording, you can make incredible high-fidelity voice recordings at home or on the go.",
+      "Using advanced computational audio, Voice Isolation minimizes background noise while clarifying the sound of your voice — even in loud or windy conditions.",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const cards = [
     alt: "Enjoy every note, beat, and vibe",
     boldText: "Enjoy every note, beat, and vibe.",
     description:
-      "The acoustic architecture uses an Apple-designed low-distortion driver powered by a custom high dynamic range amplifier. Put simply, you hear music in exceptional detail, with deeper bass and crystal-clear highs.",
+      "The acoustic architecture uses an Apple-designed low-distortion driver powered by a custom high dynamic range amplifier.",
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ const cards = [
     alt: "Calibrates music to your ears",
     boldText: "Calibrates music to your ears.",
     description:
-      "Adaptive EQ automatically tunes music to your ears. Inward-facing microphones detect what you're hearing, then adjust low and midrange frequencies to deliver rich detail in every song.",
+      "Adaptive EQ automatically tunes music to your ears. Inward-facing microphones detect what you're hearing, then adjust low and midrange frequencies.",
   },
   {
     id: 5,
@@ -43,286 +43,199 @@ const cards = [
     alt: "Real talk in real time",
     boldText: "Real talk in real time.",
     description:
-      "Connect on FaceTime in crisp, HD quality with an AAC-ELD speech codec. And Group FaceTime calls sound more true to life than ever with support for Personalized Spatial Audio.",
+      "Connect on FaceTime in crisp, HD quality with an AAC-ELD speech codec. Group FaceTime calls sound more true to life than ever.",
   },
 ];
 
-const DARK = "#05050a";
-
 export default function Cart() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollRight, setCanScrollRight] = useState(true);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [cardWidth, setCardWidth] = useState(0);
+  const { sectionRef } = useCartAnimation();
 
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollStart = useRef(0);
-  const moved = useRef(false);
-
-  const measureCard = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-card]");
-    if (card) setCardWidth(card.offsetWidth + 12);
-  }, []);
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 8);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 8);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    measureCard();
-    checkScroll();
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    window.addEventListener("resize", measureCard);
-    return () => {
-      el.removeEventListener("scroll", checkScroll);
-      window.removeEventListener("resize", measureCard);
-    };
-  }, [checkScroll, measureCard]);
-
-  const scrollOneCard = (dir: "left" | "right") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollTo({
-      left: dir === "right" ? el.scrollWidth : 0,
-      behavior: "smooth",
-    });
-  };
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    moved.current = false;
-    startX.current = e.pageX;
-    scrollStart.current = scrollRef.current?.scrollLeft ?? 0;
-  };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    const dx = e.pageX - startX.current;
-    if (Math.abs(dx) > 4) moved.current = true;
-    scrollRef.current.scrollLeft = scrollStart.current - dx;
-  };
-  const onMouseUp = () => {
-    isDragging.current = false;
-  };
+  const heroCard = cards[0]!;
+  const miniCards = cards.slice(1);
 
   return (
     <>
       <style>{`
-        .cart-scroll::-webkit-scrollbar { display: none; }
-        .cart-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* ── ضروري للـ clip-path animation ── */
-        [data-card] { will-change: clip-path; }
-        [data-card] img { will-change: transform, filter; }
-        .cart-card-caption { will-change: filter, opacity, transform; }
-
-        .cart-card {
-          flex-shrink: 0;
-          width: clamp(180px, calc((100vw - 56px) / 3), 400px);
-        }
-        @media (min-width: 768px) {
-          .cart-card { width: clamp(200px, calc((100vw - 88px) / 3), 400px); }
-        }
-        @media (min-width: 1024px) {
-          .cart-card { width: clamp(220px, calc((100vw - 120px) / 3), 400px); }
-        }
-        @media (min-width: 1280px) {
-          .cart-card { width: clamp(220px, calc((100vw - 152px) / 3), 400px); }
+        .cart-section {
+          background: #ffffff;
+          padding: clamp(48px, 6vw, 88px) clamp(20px, 5vw, 72px);
         }
 
-        .cart-card-img {
+        /* ── header ── */
+        .cart-header {
+          margin-bottom: clamp(28px, 3.5vw, 48px);
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          border-bottom: 0.5px solid #e5e5e5;
+          padding-bottom: 20px;
+        }
+        .cart-header-eyebrow {
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: .12em;
+          text-transform: uppercase;
+          color: #aaa;
+          margin-bottom: 8px;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .cart-header-title {
+          font-size: clamp(28px, 3.2vw, 44px);
+          font-weight: 700;
+          color: #111;
+          letter-spacing: -.03em;
+          line-height: 1.05;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* ── bento grid ── */
+        .cart-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto auto;
+          gap: clamp(10px, 1.2vw, 16px);
+        }
+
+        /* ── hero cell ── */
+        .cart-hero {
+          grid-column: 1 / -1;
+          display: flex;
+          flex-direction: column;
+          gap: clamp(14px, 1.6vw, 22px);
+          border-top: 0.5px solid #e5e5e5;
+          padding-top: clamp(20px, 2.5vw, 32px);
+          padding-bottom: clamp(20px, 2.5vw, 32px);
+          border-bottom: 0.5px solid #e5e5e5;
+        }
+
+        /* الصورة — fade ناعم وخفيف جدًا تحت بس، مفيش صندوق ظاهر */
+       .cart-hero-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f2f2f2;
+  border-radius: clamp(12px, 1.4vw, 20px);
+}
+
+        .cart-hero-caption {
+          font-size: clamp(13px, 1.05vw, 16px);
+          color: #888;
+          line-height: 1.65;
+          max-width: 80ch;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .cart-hero-bold {
+          font-weight: 700;
+          color: #111;
+        }
+
+        /* ── mini cells ── */
+        .cart-minis {
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: clamp(10px, 1.2vw, 16px);
+        }
+
+        .cart-mini {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          border-top: 0.5px solid #e5e5e5;
+          padding-top: clamp(14px, 1.8vw, 22px);
+        }
+
+        .cart-mini-img {
           position: relative;
           width: 100%;
+          aspect-ratio: 1 / 1;
           overflow: hidden;
-          background: #1c1c1e;
-          border-radius: clamp(14px, 1.4vw, 20px);
-          height: clamp(240px, calc((100vw - 56px) / 3 * 1.35), 520px);
-          cursor: grab;
-          /* overflow hidden ضروري عشان الـ parallax متبانش بره الكارت */
-          overflow: hidden;
-        }
-        .cart-card-img:active {
-          cursor: grabbing;
-        }
-        @media (min-width: 768px) {
-          .cart-card-img { height: clamp(270px, calc((100vw - 88px) / 3 * 1.35), 520px); }
-        }
-        @media (min-width: 1024px) {
-          .cart-card-img { height: clamp(300px, calc((100vw - 120px) / 3 * 1.35), 520px); }
-        }
-        @media (min-width: 1280px) {
-          .cart-card-img { height: clamp(300px, calc((100vw - 152px) / 3 * 1.35), 520px); }
+          background: #f2f2f2;
+          border-radius: clamp(10px, 1.2vw, 16px);
         }
 
-        .cart-card-caption {
-          padding-top: clamp(10px, 1vw, 18px);
-          padding-left: 4px;
-          padding-right: 4px;
-          color: rgba(255,255,255,0.45);
-          line-height: 1.6;
-          font-size: 11px;
-          font-weight: 400;
-          letter-spacing: 0;
-          cursor: default;
-          user-select: text;
-          -webkit-user-select: text;
+        .cart-mini-caption {
+          font-size: clamp(11px, 0.95vw, 13px);
+          color: #888;
+          line-height: 1.55;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        @media (min-width: 768px) {
-          .cart-card-caption { font-size: 12px; letter-spacing: 0.01em; }
-        }
-        @media (min-width: 1024px) {
-          .cart-card-caption { font-size: 13px; }
-        }
-        @media (min-width: 1280px) {
-          .cart-card-caption { font-size: clamp(11px, 0.9vw, 14px); }
-        }
-
-        .cart-card-bold {
+        .cart-mini-bold {
           font-weight: 600;
-          color: #f5f5f7;
+          color: #111;
         }
 
-        .cart-section {
-          padding-top:    clamp(32px, 4vw, 60px);
-          padding-bottom: clamp(32px, 4vw, 60px);
-        }
-        @media (min-width: 1280px) {
-          .cart-section {
-            padding-top:    clamp(48px, 6vw, 80px);
-            padding-bottom: clamp(48px, 6vw, 80px);
+        @media (max-width: 767px) {
+          .cart-minis {
+            grid-template-columns: 1fr 1fr;
+          }
+          .cart-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
           }
         }
-
-        .cart-scroll {
-          padding-left:  16px;
-          padding-right: 16px;
-        }
-        @media (min-width: 768px)  { .cart-scroll { padding-left: 32px;  padding-right: 32px;  } }
-        @media (min-width: 1024px) { .cart-scroll { padding-left: 48px;  padding-right: 48px;  } }
-        @media (min-width: 1280px) { .cart-scroll { padding-left: 64px;  padding-right: 64px;  } }
-
-        .cart-arrow-bar { padding-right: 16px; }
-        @media (min-width: 768px)  { .cart-arrow-bar { padding-right: 32px; } }
-        @media (min-width: 1024px) { .cart-arrow-bar { padding-right: 48px; } }
-        @media (min-width: 1280px) { .cart-arrow-bar { padding-right: 64px; } }
       `}</style>
 
-      {/* ── Animation component — لا يرندر أي HTML ── */}
-      <CartAnimation />
+      <section ref={sectionRef} className="cart-section" data-cart-section>
 
-      <section
-        className="cart-section"
-        style={{ width: "100%", position: "relative", overflow: "hidden", background: DARK }}
-      >
-        <div
-          ref={scrollRef}
-          className="cart-scroll"
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            gap: "12px",
-            paddingBottom: "clamp(20px, 2.5vw, 36px)",
-            WebkitOverflowScrolling: "touch",
-            position: "relative",
-            zIndex: 1,
-            userSelect: "none",
-          }}
-        >
-          {cards.map((card) => (
-            <div
-              key={card.id}
-              data-card
-              className="cart-card"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
-              <div className="cart-card-img">
-                <Image
-                  src={card.image}
-                  alt={card.alt}
-                  fill
-                  draggable={false}
-                  sizes="(max-width: 767px) calc((100vw - 56px) / 3),
-                         (max-width: 1023px) calc((100vw - 88px) / 3),
-                         (max-width: 1279px) calc((100vw - 120px) / 3),
-                         calc((100vw - 152px) / 3)"
-                  className="object-cover object-center pointer-events-none"
-                />
-              </div>
-
-              <p className="cart-card-caption">
-                <span className="cart-card-bold">{card.boldText}</span>{" "}
-                {card.description}
-              </p>
-            </div>
-          ))}
+        {/* Header */}
+        <div className="cart-header">
+          <div>
+            <p className="cart-header-eyebrow" data-cart-label>AirPods 4</p>
+            <h2 className="cart-header-title" data-cart-heading>
+              Engineered for<br />every moment.
+            </h2>
+          </div>
         </div>
 
-        <div
-          className="cart-arrow-bar"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "clamp(10px, 1.2vw, 18px)",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          <button
-            onClick={() =>
-              canScrollRight ? scrollOneCard("right") : scrollOneCard("left")
-            }
-            aria-label={canScrollRight ? "Next" : "Previous"}
-            style={{
-              width: "36px",
-              height: "36px",
-              borderRadius: "50%",
-              border: "none",
-              background: "#3a3a3c",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              transition: "background 0.2s",
-              flexShrink: 0,
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLButtonElement).style.background = "#555558")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLButtonElement).style.background = "#3a3a3c")
-            }
-          >
-            <svg
-              width="14" height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                transform: canScrollRight ? "rotate(0deg)" : "rotate(180deg)",
-                transition: "transform 0.3s ease",
-              }}
-            >
-              <path
-                d="M6 3L11 8L6 13"
-                stroke="#ffffff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+        <div className="cart-grid" data-cart-grid>
+
+          {/* Hero */}
+          <div className="cart-hero" data-cart-hero>
+            <div className="cart-hero-img" data-cart-hero-img>
+              <Image
+                src={heroCard.image}
+                alt={heroCard.alt}
+                fill
+                draggable={false}
+                sizes="100vw"
+                className="object-cover object-center pointer-events-none"
+                data-cart-hero-photo
               />
-            </svg>
-          </button>
+            </div>
+            <p className="cart-hero-caption" data-cart-hero-caption>
+              <span className="cart-hero-bold">{heroCard.boldText}</span>{" "}
+              {heroCard.description}
+            </p>
+          </div>
+
+          {/* Minis */}
+          <div className="cart-minis">
+            {miniCards.map((card) => (
+              <div key={card.id} className="cart-mini" data-cart-mini>
+                <div className="cart-mini-img" data-cart-mini-img>
+                  <Image
+                    src={card.image}
+                    alt={card.alt}
+                    fill
+                    draggable={false}
+                    sizes="22vw"
+                    className="object-cover object-center pointer-events-none"
+                    data-cart-mini-photo
+                  />
+                </div>
+                <p className="cart-mini-caption" data-cart-mini-caption>
+                  <span className="cart-mini-bold">{card.boldText}</span>{" "}
+                  {card.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
         </div>
+
       </section>
     </>
   );
