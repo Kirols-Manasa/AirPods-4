@@ -18,7 +18,8 @@ export default function Tabl() {
   return (
     <section
       ref={section}
-      className="w-full bg-[#f5f5f7] py-20 px-4 overflow-hidden"
+      className="w-full py-20 px-4 overflow-hidden"
+      style={{ background: "linear-gradient(to bottom, #ffffff 0%, #f5f5f7 120px)" }}
     >
       <div className="max-w-[1280px] mx-auto flex flex-col items-center">
 

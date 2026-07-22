@@ -3,27 +3,35 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useIntro } from "@/context/IntroContext";
 
 gsap.registerPlugin(useGSAP);
 
 export function useHeader(threshold = 40) {
-  const [scrolled, setScrolled]       = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
 
-  const headerRef    = useRef<HTMLElement | null>(null);
-  const brandRef     = useRef<HTMLSpanElement | null>(null);
-  const navLinkRefs  = useRef<HTMLAnchorElement[]>([]);
-  const buyBtnRef    = useRef<HTMLAnchorElement | null>(null);
+  // ============================
+  const headerRef   = useRef<HTMLElement | null>(null);
+  const brandRef    = useRef<HTMLSpanElement | null>(null);
+  const navLinkRefs = useRef<HTMLAnchorElement[]>([]);
+  const buyBtnRef   = useRef<HTMLAnchorElement | null>(null);
+  const tlRef       = useRef<gsap.core.Timeline | null>(null);
+  // ============================
 
   const lastScrollY = useRef(0);
   const isHidden    = useRef(false);
   const rafId       = useRef<number | null>(null);
 
+  const { introComplete } = useIntro();
+
   const addNavLink = (el: HTMLAnchorElement | null) => {
     if (el && !navLinkRefs.current.includes(el)) navLinkRefs.current.push(el);
   };
 
-  // ── Scroll hide/show — زي ما كان ──────────────────────────────────────
+  // ============================
+  // Scroll hide/show
+  // ============================
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
@@ -37,7 +45,7 @@ export function useHeader(threshold = 40) {
     const onScroll = () => {
       if (rafId.current !== null) cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
-        const currentY = window.scrollY;
+        const currentY  = window.scrollY;
         const direction = currentY > lastScrollY.current ? "down" : "up";
 
         if (direction === "down" && currentY > 60 && !isHidden.current) {
@@ -64,10 +72,12 @@ export function useHeader(threshold = 40) {
     };
   }, [threshold]);
 
-  // ── Active section observer — زي ما كان ───────────────────────────────
+  // ============================
+  // Active section observer
+  // ============================
   useEffect(() => {
     const sectionIds = ["#hero", "#engineered", "#details", "#battery"];
-    const elements = sectionIds
+    const elements   = sectionIds
       .map((id) => document.querySelector(id))
       .filter(Boolean) as Element[];
 
@@ -86,21 +96,20 @@ export function useHeader(threshold = 40) {
     return () => observer.disconnect();
   }, []);
 
-  // ── Page-load animations ───────────────────────────────────────────────
+  // ============================
+  // Page-load animation — paused لحد ما الـ Intro يخلص
+  // ============================
   useGSAP(
     () => {
       if (!headerRef.current) return;
 
-      const tl = gsap.timeline({ delay: 0.1 });
+      const tl = gsap.timeline({ delay: 0.1, paused: true });
 
-      // 1. Brand — clip-path reveal من اليسار
       tl.fromTo(
         brandRef.current,
         { clipPath: "inset(0 100% 0 0)" },
         { clipPath: "inset(0 0% 0 0)", duration: 0.7, ease: "power3.out" }
       )
-
-      // 2. Nav links — clip-path من تحت بـ stagger
       .fromTo(
         navLinkRefs.current,
         { clipPath: "inset(0 0 100% 0)", opacity: 0 },
@@ -113,8 +122,6 @@ export function useHeader(threshold = 40) {
         },
         "-=0.45"
       )
-
-      // 3. Buy button — circle expand
       .fromTo(
         buyBtnRef.current,
         { clipPath: "circle(0% at 50% 50%)", opacity: 0 },
@@ -126,11 +133,24 @@ export function useHeader(threshold = 40) {
         },
         "-=0.3"
       );
+
+      tlRef.current = tl;
     },
     { scope: headerRef }
   );
 
-  const base = "w-full fixed top-0 left-0 z-50 will-change-transform";
+  // ============================
+  // لما introComplete يبقى true، نشغل الـ timeline
+  // ============================
+  useEffect(() => {
+    if (introComplete && tlRef.current) {
+      tlRef.current.play();
+    }
+  }, [introComplete]);
+
+  // ============================
+
+  const base    = "w-full fixed top-0 left-0 z-50 will-change-transform";
   const bgClass = scrolled
     ? "bg-white/80 backdrop-blur-md border-b border-black/10"
     : "bg-transparent border-b border-transparent";

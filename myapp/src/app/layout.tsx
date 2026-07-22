@@ -7,14 +7,71 @@ import GridOverlay from "@/GridOverlay";
 import Header from "@/layout/Header/Header";
 import Footer from "@/sections/footer/footer";
 import CustomScrollbar from "@/CustomScrollbar";
-
-// ============================
-// استبدلنا الـ Intro المباشر بـ IntroShell
-// عشان نقدر نربط الـ Context بالـ onComplete
-// ============================
 import { IntroProvider } from "@/context/IntroContext";
 import IntroShell from "@/IntroShell";
+import type { Metadata } from "next";
 
+// ============================
+// Metadata
+// ============================
+export const metadata: Metadata = {
+  metadataBase: new URL("https://yoursite.com"),
+
+  title: {
+    default: "AirPods 4 ",
+    template: "%s | AirPods 4",
+  },
+
+  description:
+    "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+
+  icons: {
+    icon: "/images/favicon.ico",
+  },
+
+  openGraph: {
+    title: "AirPods 4 — Iconic. Now Supersonic.",
+    description:
+      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+    url: "https://yoursite.com",
+    siteName: "AirPods 4",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "AirPods 4",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "AirPods 4 — Iconic. Now Supersonic.",
+    description:
+      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+    images: ["/images/og-image.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+
+  themeColor: "#ffffff",
+
+  authors: [{ name: "Kirols" }],
+};
+
+// ============================
+// Font
+// ============================
 const inter = Inter({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -27,7 +84,6 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <body className={inter.className}>
-        {/* IntroProvider يلف كل حاجة عشان أي component يوصل للـ state */}
         <IntroProvider>
           <IntroShell />
           <CustomScrollbar />

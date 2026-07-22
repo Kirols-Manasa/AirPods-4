@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useRef } from "react";
 import gsap from "gsap";
@@ -37,85 +37,112 @@ export function useEngineeredAnimations() {
         },
       });
 
+      // ============================
+      // Label
+      // ============================
       tl.fromTo(
         label.current,
-        { clipPath: "inset(0 100% 0 0)", filter: "blur(6px)" },
+        { clipPath: "inset(0 100% 0 0)" },
         {
           clipPath: "inset(0 0% 0 0)",
-          filter: "blur(0px)",
           duration: 0.6,
           ease: "power3.out",
         }
       )
-        .fromTo(
-          wordRefs.current,
-          { clipPath: "inset(0% 0 100% 0)", filter: "blur(10px)", yPercent: 40 },
-          {
-            clipPath: "inset(0% 0 0% 0)",
-            filter: "blur(0px)",
-            yPercent: 0,
-            duration: 0.75,
-            ease: "power3.out",
-            stagger: 0.06,
-          },
-          "-=0.3"
-        )
-        .fromTo(
-          card.current,
-          {
-            clipPath: "circle(0% at 0% 50%)",
-            scale: 0.94,
-            boxShadow: "0 0px 0px rgba(0,0,0,0)",
-            borderColor: "rgba(0,0,0,0)",
-          },
-          {
-            clipPath: "circle(150% at 0% 50%)",
-            scale: 1,
-            boxShadow: "0 20px 40px -20px rgba(0,0,0,0.15)",
-            borderColor: "rgba(0,0,0,0.12)",
-            duration: 0.9,
-            ease: "power3.out",
-          },
-          "-=0.45"
-        )
-        .fromTo(
-          imagesGrid.current,
-          {
-            clipPath: "inset(0% 0% 100% 0%)",
-            rotateX: 8,
-            scale: 0.96,
-            transformPerspective: 1000,
-            transformOrigin: "50% 100%",
-          },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            rotateX: 0,
-            scale: 1,
-            duration: 1.1,
-            ease: "power3.out",
-          },
-          "-=0.55"
-        )
-        .fromTo(
-          bigImageInner.current,
-          { scale: 1.25 },
-          { scale: 1.08, duration: 1.1, ease: "power3.out" },
-          "-=1.05"
-        )
-        .fromTo(
-          airpodInner.current,
-          { scale: 1.3, filter: "blur(6px)" },
-          { scale: 1.1, filter: "blur(0px)", duration: 1, ease: "power3.out" },
-          "-=1"
-        )
-        .fromTo(
-          h2Inner.current,
-          { scale: 1.35, filter: "blur(6px)" },
-          { scale: 1.12, filter: "blur(0px)", duration: 1, ease: "power3.out" },
-          "-=1"
-        );
 
-      // ✅ bigImageWrapper parallax بدون scale
+      // ============================
+      // Headline words
+      // ============================
+      .fromTo(
+        wordRefs.current,
+        { clipPath: "inset(0% 0 100% 0)", yPercent: 30 },
+        {
+          clipPath: "inset(0% 0 0% 0)",
+          yPercent: 0,
+          duration: 0.65,
+          ease: "power3.out",
+          stagger: 0.06,
+        },
+        "-=0.3"
+      )
+
+      // ============================
+      // Card
+      // ============================
+      .fromTo(
+        card.current,
+        {
+          clipPath: "circle(0% at 0% 50%)",
+          scale: 0.94,
+          boxShadow: "0 0px 0px rgba(0,0,0,0)",
+          borderColor: "rgba(0,0,0,0)",
+        },
+        {
+          clipPath: "circle(150% at 0% 50%)",
+          scale: 1,
+          boxShadow: "0 20px 40px -20px rgba(0,0,0,0.15)",
+          borderColor: "rgba(0,0,0,0.12)",
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        "-=0.45"
+      )
+
+      // ============================
+      // Images grid
+      // ============================
+      .fromTo(
+        imagesGrid.current,
+        {
+          clipPath: "inset(0% 0% 100% 0%)",
+          rotateX: 8,
+          scale: 0.96,
+          transformPerspective: 1000,
+          transformOrigin: "50% 100%",
+        },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          rotateX: 0,
+          scale: 1,
+          duration: 1.1,
+          ease: "power3.out",
+        },
+        "-=0.55"
+      )
+
+      // ============================
+      // Big image inner
+      // ============================
+      .fromTo(
+        bigImageInner.current,
+        { scale: 1.25 },
+        { scale: 1.08, duration: 1.1, ease: "power3.out" },
+        "-=1.05"
+      )
+
+      // ============================
+      // Airpod inner
+      // ============================
+      .fromTo(
+        airpodInner.current,
+        { scale: 1.3 },
+        { scale: 1.1, duration: 1, ease: "power3.out" },
+        "-=1"
+      )
+
+      // ============================
+      // H2 inner
+      // ============================
+      .fromTo(
+        h2Inner.current,
+        { scale: 1.35 },
+        { scale: 1.12, duration: 1, ease: "power3.out" },
+        "-=1"
+      );
+
+      // ============================
+      // Big image parallax
+      // ============================
       gsap.fromTo(
         bigImageWrapper.current,
         { yPercent: -8 },
@@ -131,7 +158,9 @@ export function useEngineeredAnimations() {
         }
       );
 
-      // ✅ airpod و h2 بس في depthLayers
+      // ============================
+      // Depth layers parallax
+      // ============================
       const depthLayers = [
         { el: airpodInner, y: 14, scale: 0.07 },
         { el: h2Inner, y: 20, scale: 0.1 },
@@ -155,7 +184,9 @@ export function useEngineeredAnimations() {
         );
       });
 
+      // ============================
       // Micro-tilt
+      // ============================
       gsap.fromTo(
         imagesGrid.current,
         { rotateX: -1.5 },

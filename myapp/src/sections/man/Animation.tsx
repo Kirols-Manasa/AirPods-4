@@ -23,20 +23,7 @@ export function useManAnimation() {
       if (!label || !description || !badge || !image) return;
 
       // الصورة — parallax scrub مستمر
-      gsap.fromTo(
-        image,
-        { x: 50 },
-        {
-          x: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
+     
 
       // النصوص — triggered مرة واحدة
       const tl = gsap.timeline({
