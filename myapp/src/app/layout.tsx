@@ -15,7 +15,7 @@ import type { Metadata } from "next";
 // Metadata
 // ============================
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yoursite.com"),
+  metadataBase: new URL("https://airpods-4.vercel.app"),
 
   title: {
     default: "AirPods 4 ",
@@ -33,11 +33,11 @@ export const metadata: Metadata = {
     title: "AirPods 4 — Iconic. Now Supersonic.",
     description:
       "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
-    url: "https://yoursite.com",
+    url: "https://airpods-4.vercel.app",
     siteName: "AirPods 4",
     images: [
       {
-        url: "/images/og-image.png",
+        url: "/images/meta.webp",
         width: 1200,
         height: 630,
         alt: "AirPods 4",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: "AirPods 4 — Iconic. Now Supersonic.",
     description:
       "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
-    images: ["/images/og-image.png"],
+    images: ["/images/meta.webp"],
   },
 
   robots: {
