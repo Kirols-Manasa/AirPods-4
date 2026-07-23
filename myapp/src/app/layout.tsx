@@ -1,4 +1,4 @@
- import "@/styles/globals.css";
+import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -22,12 +22,21 @@ export const metadata: Metadata = {
   },
 
   title: {
-    default: "AirPods 4 ",
+    default: "AirPods 4 — Iconic. Now Supersonic.",
     template: "%s | AirPods 4",
   },
 
   description:
     "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+
+  keywords: [
+    "AirPods 4",
+    "wireless earbuds",
+    "Apple H2 chip",
+    "spatial audio",
+    "noise cancellation",
+    "best earbuds 2026",
+  ],
 
   icons: {
     icon: "/images/favicon.ico",
@@ -57,6 +66,7 @@ export const metadata: Metadata = {
     description:
       "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
     images: ["/images/meta.webp"],
+    creator: "@airpods",
   },
 
   robots: {
@@ -65,12 +75,34 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
     },
   },
 
   themeColor: "#ffffff",
 
   authors: [{ name: "Kirols" }],
+
+  // ← جديد: Canonical URL
+  alternates: {
+    canonical: "https://airpods-4.vercel.app",
+  },
+
+  // ← جديد: Viewport optimization
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+
+  // ← جديد: Apple specific
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+  },
 };
 
 // ============================
@@ -85,8 +117,48 @@ const inter = Inter({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // ← جديد: Product schema structured data
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "AirPods 4",
+    description:
+      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound.",
+    image: "https://airpods-4.vercel.app/images/meta.webp",
+    brand: {
+      "@type": "Brand",
+      name: "Apple",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "129",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      reviewCount: "1500",
+    },
+  };
+
   return (
     <html lang="en" dir="ltr">
+      <head>
+        {/* ← جديد: Product schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        />
+
+        {/* ← جديد: Preconnect لـ Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+        {/* ← جديد: DNS prefetch */}
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      </head>
+
       <body className={inter.className}>
         <IntroProvider>
           <IntroShell />
