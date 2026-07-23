@@ -1,9 +1,10 @@
  "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useDetailsAnimation } from "./Animation";
 
-export default function Details() {
+const Details = memo(function Details() {
   const { sectionRef } = useDetailsAnimation();
 
   return (
@@ -47,7 +48,12 @@ export default function Details() {
                 alt="Physical fit-ness"
                 width={260}
                 height={320}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 54vw"
                 className="object-contain mix-blend-multiply"
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <div className="text-center mt-8">
@@ -70,7 +76,12 @@ export default function Details() {
                 alt="Refined Acoustic Venting"
                 width={220}
                 height={220}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 41vw, 42vw"
                 className="object-contain mix-blend-multiply"
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <div className="text-center mt-8">
@@ -97,7 +108,12 @@ export default function Details() {
                 alt="Contoured for every ear"
                 width={180}
                 height={180}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 31vw, 31vw"
                 className="object-contain mix-blend-multiply"
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <p className="text-sm font-semibold text-black mt-8 text-center">
@@ -117,7 +133,12 @@ export default function Details() {
                 alt="Dust, sweat, and water resistant"
                 width={180}
                 height={180}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 31vw, 31vw"
                 className="object-contain mix-blend-multiply"
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <p className="text-sm font-semibold text-black mt-8 text-center">
@@ -137,7 +158,12 @@ export default function Details() {
                 alt="Precision machined geometry"
                 width={180}
                 height={180}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 31vw, 31vw"
                 className="object-contain mix-blend-multiply"
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <p className="text-sm font-semibold text-black mt-8 text-center">
@@ -175,7 +201,12 @@ export default function Details() {
               alt="Force sensor stem"
               width={180}
               height={240}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 30vw, 18vw"
               className="object-contain mix-blend-multiply flex-shrink-0"
+              loading="lazy"
+              quality={70}
+              decoding="async"
+              placeholder="empty"
             />
           </div>
         </div>
@@ -183,4 +214,6 @@ export default function Details() {
       </div>
     </section>
   );
-}
+});
+
+export default Details;

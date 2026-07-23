@@ -7,21 +7,31 @@ import { useIntro } from "@/context/IntroContext";
 
 gsap.registerPlugin(useGSAP);
 
-export function useHeader(threshold = 40) {
-  const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
+const SECTION_IDS = ["#hero", "#engineered", "#details", "#battery"] as const;
+const HIDE_THRESHOLD_PX = 60;
+const SCROLL_MARGIN = 10;
+const ROOT_MARGIN   = "-40% 0px -50% 0px";
 
-  // ============================
+const HEADER_TRANSITION =
+  "transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), " +
+  "background-color 0.3s ease-in-out, " +
+  "backdrop-filter 0.3s ease-in-out, " +
+  "border-color 0.3s ease-in-out";
+
+export function useHeader(threshold = 40) {
+  const [scrolled,       setScrolled]       = useState(false);
+  const [activeSection,  setActiveSection]  = useState<string>("");
+
   const headerRef   = useRef<HTMLElement | null>(null);
   const brandRef    = useRef<HTMLSpanElement | null>(null);
   const navLinkRefs = useRef<HTMLAnchorElement[]>([]);
   const buyBtnRef   = useRef<HTMLAnchorElement | null>(null);
   const tlRef       = useRef<gsap.core.Timeline | null>(null);
-  // ============================
 
   const lastScrollY = useRef(0);
   const isHidden    = useRef(false);
   const rafId       = useRef<number | null>(null);
+  const scrolled$   = useRef(false);
 
   const { introComplete } = useIntro();
 
@@ -29,35 +39,32 @@ export function useHeader(threshold = 40) {
     if (el && !navLinkRefs.current.includes(el)) navLinkRefs.current.push(el);
   };
 
-  // ============================
-  // Scroll hide/show
-  // ============================
+  // ── Scroll hide / show + scrolled state ──────────────────────────────────
   useEffect(() => {
     const header = headerRef.current;
     if (!header) return;
 
-    header.style.transition =
-      "transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), " +
-      "background-color 0.3s ease-in-out, " +
-      "backdrop-filter 0.3s ease-in-out, " +
-      "border-color 0.3s ease-in-out";
+    header.style.transition = HEADER_TRANSITION;
 
     const onScroll = () => {
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+      if (rafId.current !== null) return;
       rafId.current = requestAnimationFrame(() => {
         const currentY  = window.scrollY;
-        const direction = currentY > lastScrollY.current ? "down" : "up";
+        const goingDown = currentY > lastScrollY.current;
 
-        if (direction === "down" && currentY > 60 && !isHidden.current) {
+        if (goingDown && currentY > HIDE_THRESHOLD_PX && !isHidden.current) {
           isHidden.current = true;
           header.style.transform = "translateY(-100%)";
-        } else if (direction === "up" && isHidden.current) {
+        } else if (!goingDown && isHidden.current) {
           isHidden.current = false;
           header.style.transform = "translateY(0%)";
         }
 
-        const shouldBeScrolled = currentY > threshold && currentY > 10;
-        setScrolled((prev) => (prev === shouldBeScrolled ? prev : shouldBeScrolled));
+        const shouldBeScrolled = currentY > threshold && currentY > SCROLL_MARGIN;
+        if (scrolled$.current !== shouldBeScrolled) {
+          scrolled$.current = shouldBeScrolled;
+          setScrolled(shouldBeScrolled);
+        }
 
         lastScrollY.current = currentY;
         rafId.current = null;
@@ -68,16 +75,16 @@ export function useHeader(threshold = 40) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+        rafId.current = null;
+      }
     };
   }, [threshold]);
 
-  // ============================
-  // Active section observer
-  // ============================
+  // ── Active section observer ───────────────────────────────────────────────
   useEffect(() => {
-    const sectionIds = ["#hero", "#engineered", "#details", "#battery"];
-    const elements   = sectionIds
+    const elements = SECTION_IDS
       .map((id) => document.querySelector(id))
       .filter(Boolean) as Element[];
 
@@ -85,20 +92,21 @@ export function useHeader(threshold = 40) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
-        });
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+            break;
+          }
+        }
       },
-      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+      { rootMargin: ROOT_MARGIN, threshold: 0 }
     );
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
-  // ============================
-  // Page-load animation — paused لحد ما الـ Intro يخلص
-  // ============================
+  // ── Page-load animation (paused until intro completes) ───────────────────
   useGSAP(
     () => {
       if (!headerRef.current) return;
@@ -139,16 +147,14 @@ export function useHeader(threshold = 40) {
     { scope: headerRef }
   );
 
-  // ============================
-  // لما introComplete يبقى true، نشغل الـ timeline
-  // ============================
+  // ── Play animation when intro finishes ───────────────────────────────────
   useEffect(() => {
     if (introComplete && tlRef.current) {
       tlRef.current.play();
     }
   }, [introComplete]);
 
-  // ============================
+  // ─────────────────────────────────────────────────────────────────────────
 
   const base    = "w-full fixed top-0 left-0 z-50 will-change-transform";
   const bgClass = scrolled

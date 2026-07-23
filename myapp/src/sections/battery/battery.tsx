@@ -1,9 +1,10 @@
  "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useBatteryAnimation } from "./Animation";
 
-export default function Battery() {
+const Battery = memo(function Battery() {
   const { sectionRef } = useBatteryAnimation();
 
   return (
@@ -61,6 +62,9 @@ export default function Battery() {
                   width={22}
                   height={22}
                   className="object-contain"
+                  loading="lazy"
+                  quality={70}
+                  decoding="async"
                 />
               </div>
               <div>
@@ -83,6 +87,9 @@ export default function Battery() {
                   width={22}
                   height={22}
                   className="object-contain"
+                  loading="lazy"
+                  quality={70}
+                  decoding="async"
                 />
               </div>
               <div>
@@ -104,8 +111,13 @@ export default function Battery() {
               alt="AirPods Case"
               width={350}
               height={350}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 350px"
               className="object-contain"
               style={{ filter: "drop-shadow(0px 20px 40px rgba(0,0,0,0.35))" }}
+              loading="lazy"
+              quality={70}
+              decoding="async"
+              placeholder="empty"
             />
           </div>
 
@@ -115,8 +127,13 @@ export default function Battery() {
               alt="Charger"
               width={450}
               height={450}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 450px"
               className="object-contain"
               style={{ filter: "drop-shadow(0px 10px 25px rgba(0,0,0,0.35))" }}
+              loading="lazy"
+              quality={70}
+              decoding="async"
+              placeholder="empty"
             />
           </div>
         </div>
@@ -130,4 +147,6 @@ export default function Battery() {
       />
     </section>
   );
-}
+});
+
+export default Battery;

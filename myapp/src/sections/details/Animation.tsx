@@ -1,89 +1,155 @@
  "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useCallback, startTransition } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useDetailsAnimation() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const elementsRef = useRef<{
+    headerTitle: HTMLElement | null;
+    headerDesc: HTMLElement | null;
+    rows: HTMLElement[];
+    cards: HTMLElement[];
+    images: HTMLElement[];
+  }>({
+    headerTitle: null,
+    headerDesc: null,
+    rows: [],
+    cards: [],
+    images: [],
+  });
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current;
-      if (!section) return;
+  const contextRef = useRef<ReturnType<typeof gsap.context> | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const hasAnimatedRef = useRef(false);
 
-      // ── Header ──────────────────────────────────────────
-      const headerTitle = section.querySelector<HTMLElement>("[data-header-title]");
-      const headerDesc = section.querySelector<HTMLElement>("[data-header-desc]");
+  const setupElements = useCallback(() => {
+    const section = sectionRef.current;
+    if (!section) return null;
 
-      if (headerTitle && headerDesc) {
-        gsap.timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: {
-            trigger: headerTitle,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        })
-          .fromTo(headerTitle,
-            { clipPath: "inset(0 100% 0 0)" },
-            { clipPath: "inset(0 0% 0 0)", duration: 0.8 }
-          )
-          .fromTo(headerDesc,
-            { clipPath: "inset(0 100% 0 0)" },
-            { clipPath: "inset(0 0% 0 0)", duration: 0.7 },
-            0.15
-          );
-      }
+    const headerTitle = section.querySelector<HTMLElement>("[data-header-title]");
+    const headerDesc = section.querySelector<HTMLElement>("[data-header-desc]");
+    const rows = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-row]")
+    );
+    const cards = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-card]")
+    );
+    const images = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-card-image]")
+    );
 
-      // ── Rows — stagger per row ───────────────────────────
-      const rows = section.querySelectorAll<HTMLElement>("[data-row]");
+    if (!headerTitle || !headerDesc || cards.length === 0) {
+      return null;
+    }
 
-      rows.forEach((row) => {
-        const cards = row.querySelectorAll<HTMLElement>("[data-card]");
+    elementsRef.current = {
+      headerTitle,
+      headerDesc,
+      rows,
+      cards,
+      images,
+    };
 
-        cards.forEach((card, i) => {
-          const img = card.querySelector<HTMLElement>("[data-card-image]");
+    return elementsRef.current;
+  }, []);
 
-          const tl = gsap.timeline({
-            scrollTrigger: {
-              trigger: row,
-              start: "top 78%",
-              toggleActions: "play none none none",
-            },
-            delay: i * 0.15,
-          });
+  useGSAP(
+    () => {
+      if (!sectionRef.current || hasAnimatedRef.current) return;
 
-          // الكارت: clip من تحت لفوق
-          tl.fromTo(
-            card,
-            { clipPath: "inset(0 0 100% 0)", borderRadius: "2rem" },
-            {
-              clipPath: "inset(0 0 0% 0)",
-              borderRadius: "1.5rem",
-              duration: 0.85,
-              ease: "power3.out",
-            }
-          );
+      const animationFrame = requestAnimationFrame(() => {
+        startTransition(() => {
+          const elements = setupElements();
+          if (!elements) return;
 
-          // الصورة: scale معاكس — بتترتب جوه الكارت
-          if (img) {
+          hasAnimatedRef.current = true;
+
+          contextRef.current = gsap.context(() => {
+            const { headerTitle, headerDesc, cards, images } = elements;
+
+            const tl = gsap.timeline();
+            timelineRef.current = tl;
+
+            // ── Header animation ───────────────────────────────
             tl.fromTo(
-              img,
-              { scale: 1.1 },
-              { scale: 1, duration: 0.85, ease: "power3.out" },
+              headerTitle,
+              { clipPath: "inset(0 100% 0 0)" },
+              {
+                clipPath: "inset(0 0% 0 0)",
+                duration: 0.6,
+                ease: "power3.out",
+              },
               0
-            );
-          }
+            )
+              .fromTo(
+                headerDesc,
+                { clipPath: "inset(0 100% 0 0)" },
+                { clipPath: "inset(0 0% 0 0)", duration: 0.5, ease: "power3.out" },
+                0.1
+              );
+
+            // ── Cards animation (batched) ──────────────────────
+            if (cards.length > 0) {
+              cards.forEach((card, i) => {
+                const img = images[i];
+
+                tl.fromTo(
+                  card,
+                  { clipPath: "inset(0 0 100% 0)", borderRadius: "2rem" },
+                  {
+                    clipPath: "inset(0 0 0% 0)",
+                    borderRadius: "1.5rem",
+                    duration: 0.7,
+                    ease: "power3.out",
+                  },
+                  0.6 + i * 0.08
+                );
+
+                if (img) {
+                  tl.fromTo(
+                    img,
+                    { scale: 1.1 },
+                    { scale: 1, duration: 0.7, ease: "power3.out" },
+                    0.6 + i * 0.08
+                  );
+                }
+              });
+            }
+
+            // ── ScrollTrigger setup ────────────────────────────
+            ScrollTrigger.create({
+              trigger: sectionRef.current!,
+              start: "top 78%",
+              onEnter: () => {
+                tl.play();
+              },
+              once: true,
+              fastScrollEnd: true,
+            });
+          }, sectionRef);
         });
       });
 
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+      return () => {
+        cancelAnimationFrame(animationFrame);
+        if (contextRef.current) {
+          contextRef.current.revert();
+          contextRef.current = null;
+        }
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+          timelineRef.current = null;
+        }
+        hasAnimatedRef.current = false;
+      };
+    },
+    { scope: sectionRef, dependencies: [] }
+  );
 
   return { sectionRef };
 }

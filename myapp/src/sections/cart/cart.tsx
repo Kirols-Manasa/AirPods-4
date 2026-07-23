@@ -2,6 +2,7 @@
 "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useCartAnimation } from "./Animation";
 
 const cards = [
@@ -47,7 +48,7 @@ const cards = [
   },
 ];
 
-export default function Cart() {
+const Cart = memo(function Cart() {
   const { sectionRef } = useCartAnimation();
 
   const heroCard = cards[0]!;
@@ -109,14 +110,14 @@ export default function Cart() {
         }
 
         /* الصورة — fade ناعم وخفيف جدًا تحت بس، مفيش صندوق ظاهر */
-       .cart-hero-img {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #f2f2f2;
-  border-radius: clamp(12px, 1.4vw, 20px);
-}
+        .cart-hero-img {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          background: #f2f2f2;
+          border-radius: clamp(12px, 1.4vw, 20px);
+        }
 
         .cart-hero-caption {
           font-size: clamp(13px, 1.05vw, 16px);
@@ -203,6 +204,10 @@ export default function Cart() {
                 sizes="100vw"
                 className="object-cover object-center pointer-events-none"
                 data-cart-hero-photo
+                loading="lazy"
+                quality={70}
+                decoding="async"
+                placeholder="empty"
               />
             </div>
             <p className="cart-hero-caption" data-cart-hero-caption>
@@ -212,7 +217,7 @@ export default function Cart() {
           </div>
 
           {/* Minis */}
-          <div className="cart-minis">
+          <div className="cart-minis" data-cart-minis>
             {miniCards.map((card) => (
               <div key={card.id} className="cart-mini" data-cart-mini>
                 <div className="cart-mini-img" data-cart-mini-img>
@@ -221,9 +226,13 @@ export default function Cart() {
                     alt={card.alt}
                     fill
                     draggable={false}
-                    sizes="22vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 22vw, 22vw"
                     className="object-cover object-center pointer-events-none"
                     data-cart-mini-photo
+                    loading="lazy"
+                    quality={70}
+                    decoding="async"
+                    placeholder="empty"
                   />
                 </div>
                 <p className="cart-mini-caption" data-cart-mini-caption>
@@ -239,4 +248,6 @@ export default function Cart() {
       </section>
     </>
   );
-}
+});
+
+export default Cart;

@@ -1,9 +1,10 @@
  "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useManAnimation } from "./Animation";
 
-export default function Man() {
+const Man = memo(function Man() {
   const { sectionRef } = useManAnimation();
 
   return (
@@ -30,8 +31,8 @@ export default function Man() {
           </p>
 
           <h2 className="font-semibold text-black mb-4 sm:mb-6 text-2xl sm:text-4xl lg:text-display leading-tight">
-            <span data-headline className="block" style={{ clipPath: "inset(0 100% 0 0)" }}>Personalized</span>
-            <span data-headline className="block" style={{ clipPath: "inset(0 100% 0 0)" }}>Spatial Audio.</span>
+            <span data-headline style={{ clipPath: "inset(0 100% 0 0)" }} className="block">Personalized</span>
+            <span data-headline style={{ clipPath: "inset(0 100% 0 0)" }} className="block">Spatial Audio.</span>
           </h2>
 
           <p data-description style={{ clipPath: "inset(0 0 100% 0)" }}
@@ -61,11 +62,17 @@ export default function Man() {
             src="/images/man.webp"
             alt="Personalized Spatial Audio"
             fill
+            sizes="(max-width: 640px) 55vw, (max-width: 1024px) 58vw, 60vw"
             className="object-cover object-left"
-            priority
+            loading="lazy"
+            quality={75}
+            decoding="async"
+            placeholder="empty"
           />
         </div>
       </section>
     </div>
   );
-}
+});
+
+export default Man;

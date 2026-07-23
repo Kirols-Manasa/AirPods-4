@@ -1,9 +1,10 @@
  "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useWomenAnimation } from "./Animation";
 
-export default function Women() {
+const Women = memo(function Women() {
   const { sectionRef } = useWomenAnimation();
 
   return (
@@ -24,8 +25,12 @@ export default function Women() {
           alt="Interact with Siri"
           width={1280}
           height={1400}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 896px"
           className="w-full h-auto object-contain"
-          priority
+          loading="lazy"
+          quality={75}
+          decoding="async"
+          placeholder="empty"
         />
       </div>
 
@@ -80,4 +85,6 @@ export default function Women() {
       </div>
     </section>
   );
-}
+});
+
+export default Women;

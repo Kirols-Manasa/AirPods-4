@@ -1,10 +1,15 @@
  "use client";
 
+import Image from "next/image";
 import { useTabIAnimations } from "./Animation";
-
-const HEADLINE_WORDS = ["Say", "it", "in", "a", "way", "only", "you", "can."];
+import { useMemo } from "react";
 
 export default function Tabl() {
+  const HEADLINE_WORDS = useMemo(
+    () => ["Say", "it", "in", "a", "way", "only", "you", "can."],
+    []
+  );
+
   const {
     section,
     headline,
@@ -72,12 +77,19 @@ export default function Tabl() {
           ref={imgWrapper}
           className="w-full max-w-[900px] relative overflow-hidden rounded-[16px]"
         >
-          <img
-            ref={imgInner}
-            src="/images/tabl.webp"
-            alt="AirPods engraving"
-            className="w-full object-contain block will-change-transform"
-          />
+          <div ref={imgInner} className="relative w-full aspect-video will-change-transform">
+            <Image
+              src="/images/tabl.webp"
+              alt="AirPods engraving"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 900px"
+              className="object-contain"
+              loading="lazy"
+              quality={75}
+              decoding="async"
+              placeholder="empty"
+            />
+          </div>
         </div>
 
       </div>

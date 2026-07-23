@@ -1,6 +1,6 @@
  "use client";
 
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -16,74 +16,98 @@ export function useTabIAnimations() {
   const imgInner   = useRef<HTMLImageElement>(null);
 
   const wordRefs = useRef<HTMLSpanElement[]>([]);
-  const addWordRef = (el: HTMLSpanElement | null) => {
-    if (el && !wordRefs.current.includes(el)) wordRefs.current.push(el);
-  };
+
+  const addWordRef = useCallback((el: HTMLSpanElement | null) => {
+    if (!el) return;
+    const currentRefs = wordRefs.current;
+    if (!currentRefs.includes(el)) {
+      currentRefs.push(el);
+    }
+  }, []);
 
   useGSAP(
     () => {
-      if (!section.current) return;
+      const sectionEl = section.current;
+      if (!sectionEl) return;
+
+      const currentWordRefs = wordRefs.current;
+      const paragraphEl = paragraph.current;
+      const buttonEl = button.current;
+      const imgWrapperEl = imgWrapper.current;
+      const imgInnerEl = imgInner.current;
 
       // ── النصوص ─────────────────────────────────────────────────────────
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section.current,
-          start: "top 75%",
-          toggleActions: "play none none none",
-        },
-      });
-
-      tl.fromTo(
-        wordRefs.current,
-        { y: 24, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.055 }
-      )
-      .fromTo(
-        paragraph.current,
-        { y: 14, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-        "-=0.35"
-      )
-      .fromTo(
-        button.current,
-        { y: 10, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
-        "-=0.3"
-      );
-
-      // ── الصورة — clip-path reveal ───────────────────────────────────────
-      gsap.fromTo(
-        imgWrapper.current,
-        { clipPath: "inset(8% 0 8% 0 round 16px)" },
-        {
-          clipPath: "inset(0% 0 0% 0 round 16px)",
-          duration: 1.2,
-          ease: "power3.out",
+      if (currentWordRefs.length > 0 || paragraphEl || buttonEl) {
+        const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: imgWrapper.current,
-            start: "top 78%",
+            trigger: sectionEl,
+            start: "top 75%",
             toggleActions: "play none none none",
           },
+        });
+
+        if (currentWordRefs.length > 0) {
+          tl.fromTo(
+            currentWordRefs,
+            { y: 24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.055 }
+          );
         }
-      );
+
+        if (paragraphEl) {
+          tl.fromTo(
+            paragraphEl,
+            { y: 14, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+            "-=0.35"
+          );
+        }
+
+        if (buttonEl) {
+          tl.fromTo(
+            buttonEl,
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+            "-=0.3"
+          );
+        }
+      }
+
+      // ── الصورة — clip-path reveal ───────────────────────────────────────
+      if (imgWrapperEl) {
+        gsap.fromTo(
+          imgWrapperEl,
+          { clipPath: "inset(8% 0 8% 0 round 16px)" },
+          {
+            clipPath: "inset(0% 0 0% 0 round 16px)",
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: imgWrapperEl,
+              start: "top 78%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
 
       // ── الصورة — parallax على imgInner ─────────────────────────────────
-      // imgInner أكبر من الـ wrapper بـ 10% من فوق وتحت (scale 1.1)
-      // عشان الـ yPercent يتحرك من غير ما يظهر أي فراغ
-      gsap.set(imgInner.current, { scale: 1.1, yPercent: -5 });
+      if (imgInnerEl && imgWrapperEl) {
+        gsap.set(imgInnerEl, { scale: 1.1, yPercent: -5 });
 
-      gsap.to(imgInner.current, {
-        yPercent: 5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: imgWrapper.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-      });
+        gsap.to(imgInnerEl, {
+          yPercent: 5,
+          ease: "none",
+          scrollTrigger: {
+            trigger: imgWrapperEl,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          },
+        });
+      }
     },
-    { scope: section }
+    { scope: section, dependencies: [] }
   );
 
   return {

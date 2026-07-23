@@ -1,18 +1,19 @@
  "use client";
 
 import Image from "next/image";
+import { memo } from "react";
 import { useGirls2Animation } from "./Animation";
 
-export default function Girls2() {
+const Girls2 = memo(function Girls2() {
   const { sectionRef } = useGirls2Animation();
 
   return (
-  <div className="w-full overflow-hidden bg-white">
-  <section
-    ref={sectionRef}
-    className="relative w-full mt-16 sm:mt-24 lg:mt-32"
-    style={{ minHeight: "120svh", backgroundColor: "#ffffff" }}
-  >
+    <div className="w-full overflow-hidden bg-white">
+      <section
+        ref={sectionRef}
+        className="relative w-full mt-16 sm:mt-24 lg:mt-32"
+        style={{ minHeight: "120svh", backgroundColor: "#ffffff" }}
+      >
         {/* الصورة */}
         <div data-image className="absolute inset-0">
           <Image
@@ -21,18 +22,21 @@ export default function Girls2() {
             fill
             sizes="100vw"
             className="object-cover object-center sm:object-top"
-            priority
+            loading="lazy"
+            quality={70}
+            decoding="async"
+            placeholder="empty"
           />
         </div>
 
         {/* fade فوق */}
-<div
-  className="absolute top-0 left-0 w-full z-10"
-  style={{
-    height: "35%", // بدل 30%
-    background: "linear-gradient(to bottom, #ffffff, transparent)",
-  }}
-/>
+        <div
+          className="absolute top-0 left-0 w-full z-10"
+          style={{
+            height: "35%",
+            background: "linear-gradient(to bottom, #ffffff, transparent)",
+          }}
+        />
 
         {/* fade تحت */}
         <div
@@ -161,4 +165,6 @@ export default function Girls2() {
       </section>
     </div>
   );
-}
+});
+
+export default Girls2;

@@ -11,7 +11,7 @@ const links = [
   { href: "#engineered", label: "Sound"    },
   { href: "#details",    label: "Design"   },
   { href: "#battery",    label: "Battery"  },
-];
+] as const;
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -26,9 +26,9 @@ export default function Header() {
     activeSection,
   } = useHeader();
 
-  const isLight = open && !isScrolled;
+  const isLight        = open && !isScrolled;
   const activeTextColor = isLight ? "text-black" : textColor;
-  const isDarkButton = activeTextColor !== "text-white";
+  const isDarkButton    = activeTextColor !== "text-white";
 
   const scrollToSection = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -36,14 +36,7 @@ export default function Header() {
       const target = document.querySelector(href);
       if (!target) return;
 
-      if (typeof window === "undefined") {
-        target.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-
-      const lenis = (window as unknown as Record<string, unknown>).lenis as
-        | { scrollTo: (target: Element, options?: object) => void }
-        | undefined;
+      const lenis = (window as unknown as { lenis?: { scrollTo: (t: Element, o?: object) => void } }).lenis;
 
       if (lenis) {
         lenis.scrollTo(target, { offset: -60, duration: 1.2 });
@@ -61,6 +54,10 @@ export default function Header() {
     ? "bg-white/80 backdrop-blur-md border-b border-black/10"
     : "";
 
+  const buyBtnClass = isDarkButton
+    ? "bg-black text-white border-black"
+    : "bg-white text-black border-white";
+
   return (
     <header
       className={`${headerClass} ${headerBgOverride}`}
@@ -69,7 +66,6 @@ export default function Header() {
       <Container>
         <div className="flex items-center justify-between py-3 sm:py-4">
 
-          {/* Brand */}
           <span
             ref={brandRef}
             className={`text-[15px] sm:text-[17px] lg:text-[19px] xl:text-[20px] font-semibold transition-colors duration-300 ${activeTextColor}`}
@@ -80,7 +76,6 @@ export default function Header() {
 
           <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
 
-            {/* Desktop Nav */}
             <nav className="hidden sm:flex items-center gap-3 lg:gap-5 xl:gap-6" aria-label="Main navigation">
               {links.map((link) => {
                 const isActive = activeSection === link.href;
@@ -90,12 +85,7 @@ export default function Header() {
                     href={link.href}
                     ref={addNavLink}
                     onClick={(e) => scrollToSection(e, link.href)}
-                    className={`
-                      text-[12px] lg:text-[13px] xl:text-[14px]
-                      transition-[color,opacity] duration-300
-                      ${activeTextColor}
-                      ${isActive ? "opacity-100 font-bold" : "opacity-40 hover:opacity-50"}
-                    `}
+                    className={`text-[12px] lg:text-[13px] xl:text-[14px] transition-[color,opacity] duration-300 ${activeTextColor} ${isActive ? "opacity-100 font-bold" : "opacity-40 hover:opacity-50"}`}
                     style={{ willChange: "clip-path, opacity" }}
                   >
                     {link.label}
@@ -104,21 +94,15 @@ export default function Header() {
               })}
             </nav>
 
-            {/* Buy button */}
             <Link
               ref={buyBtnRef}
               href="#"
-              className={`hidden sm:flex items-center px-4 sm:px-5 lg:px-6 py-1.5 lg:py-2 text-[12px] lg:text-[13px] xl:text-[14px] rounded-full hover:opacity-80 transition-all duration-300 border ${
-                isDarkButton
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-black border-white"
-              }`}
+              className={`hidden sm:flex items-center px-4 sm:px-5 lg:px-6 py-1.5 lg:py-2 text-[12px] lg:text-[13px] xl:text-[14px] rounded-full hover:opacity-80 transition-all duration-300 border ${buyBtnClass}`}
               style={{ willChange: "clip-path, opacity" }}
             >
               Buy
             </Link>
 
-            {/* Mobile toggle */}
             <button
               className={`sm:hidden p-1 cursor-pointer transition-colors duration-300 ${activeTextColor}`}
               onClick={handleToggle}
@@ -132,7 +116,6 @@ export default function Header() {
         </div>
       </Container>
 
-      {/* Mobile Menu */}
       <div
         className="sm:hidden"
         style={{
@@ -152,12 +135,7 @@ export default function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={(e) => { scrollToSection(e, link.href); handleClose(); }}
-                    className={`
-                      text-[32px] font-semibold tracking-[-0.02em] leading-[1.2]
-                      transition-[color,opacity] duration-300
-                      ${activeTextColor}
-                      ${isActive ? "opacity-100" : "opacity-40 hover:opacity-60"}
-                    `}
+                    className={`text-[32px] font-semibold tracking-[-0.02em] leading-[1.2] transition-[color,opacity] duration-300 ${activeTextColor} ${isActive ? "opacity-100" : "opacity-40 hover:opacity-60"}`}
                   >
                     {link.label}
                   </Link>
@@ -166,11 +144,7 @@ export default function Header() {
 
               <Link
                 href="#"
-                className={`mt-2 w-full py-3 text-[15px] font-semibold rounded-full hover:opacity-80 transition-all duration-300 text-center border ${
-                  isDarkButton
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-black border-white"
-                }`}
+                className={`mt-2 w-full py-3 text-[15px] font-semibold rounded-full hover:opacity-80 transition-all duration-300 text-center border ${buyBtnClass}`}
               >
                 Buy
               </Link>

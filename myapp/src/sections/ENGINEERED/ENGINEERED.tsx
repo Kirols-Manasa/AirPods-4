@@ -1,12 +1,13 @@
-  "use client";
+ "use client";
 
 import Image from "next/image";
+import { memo, useCallback } from "react";
 import Container from "@/Container";
 import { useEngineeredAnimations } from "./Animation";
 
 const HEADLINE_WORDS = ["Performance", "you", "can", "hear."];
 
-export default function Engineered() {
+const Engineered = memo(function Engineered() {
   const {
     section,
     label,
@@ -21,6 +22,8 @@ export default function Engineered() {
     h2Wrapper,
     h2Inner,
   } = useEngineeredAnimations();
+
+  const handleWordRef = useCallback(addWordRef, [addWordRef]);
 
   return (
     <section
@@ -57,7 +60,7 @@ export default function Engineered() {
             >
               {HEADLINE_WORDS.map((word, i) => (
                 <span key={i} className="overflow-hidden inline-block pb-1">
-                  <span ref={addWordRef} className="inline-block will-change-transform">
+                  <span ref={handleWordRef} className="inline-block will-change-transform">
                     {word}
                   </span>
                 </span>
@@ -103,7 +106,7 @@ export default function Engineered() {
             style={{ transformStyle: "preserve-3d" }}
           >
 
-            {/* Top — hello.jpg */}
+            {/* Top — hello.webp */}
             <div
               ref={bigImageWrapper}
               className="
@@ -120,6 +123,9 @@ export default function Engineered() {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 58vw"
                   className="object-cover object-center"
                   priority
+                  quality={80}
+                  decoding="async"
+                  placeholder="empty"
                 />
               </div>
             </div>
@@ -142,6 +148,10 @@ export default function Engineered() {
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 29vw"
                     className="object-cover object-center"
+                    loading="lazy"
+                    quality={75}
+                    decoding="async"
+                    placeholder="empty"
                   />
                 </div>
               </div>
@@ -161,6 +171,10 @@ export default function Engineered() {
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 29vw"
                     className="object-cover object-center"
+                    loading="lazy"
+                    quality={75}
+                    decoding="async"
+                    placeholder="empty"
                   />
                 </div>
               </div>
@@ -172,4 +186,6 @@ export default function Engineered() {
       </Container>
     </section>
   );
-}
+});
+
+export default Engineered;

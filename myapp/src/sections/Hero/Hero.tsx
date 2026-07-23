@@ -2,14 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { memo } from "react";
 import Container from "@/Container";
-
-// ============================
-// الـ animation في ملف منفصل
-// ============================
 import { useHeroAnimation } from "./Animation";
 
-export default function Hero() {
+const Hero = memo(function Hero() {
   const { containerRef } = useHeroAnimation();
 
   return (
@@ -58,16 +55,22 @@ export default function Hero() {
             className="mt-12 sm:mt-16 lg:mt-20 w-full flex justify-center"
           >
             <Image
-              src="/images/Airpods.webp"
-              alt="AirPods 4"
-              width={800}
-              height={600}
-              className="w-full max-w-[600px] sm:max-w-[700px] lg:max-w-[500px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
-              priority
-            />
+  src="/images/Airpods.webp"
+  alt="AirPods 4"
+  width={800}
+  height={600}
+  className="w-full max-w-[600px] sm:max-w-[700px] lg:max-w-[500px] h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)]"
+  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 500px"
+  priority
+  quality={80}
+  decoding="async"
+  placeholder="empty"  // لا تحميل blur، أسرع أداء
+/>
           </div>
         </div>
       </Container>
     </section>
   );
-}
+});
+
+export default Hero;
