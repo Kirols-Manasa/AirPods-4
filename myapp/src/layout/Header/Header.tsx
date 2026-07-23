@@ -142,12 +142,11 @@ export default function Header() {
                 );
               })}
 
-              <Link
-                href="#"
-                className={`mt-2 w-full py-3 text-[15px] font-semibold rounded-full hover:opacity-80 transition-all duration-300 text-center border ${buyBtnClass}`}
-              >
-                Buy
-              </Link>
+              <button
+  className={`mt-2 w-full py-3 text-[15px] font-semibold rounded-full hover:opacity-80 transition-all duration-300 text-center border ${buyBtnClass}`}
+>
+  Buy
+</button>
             </nav>
           </Container>
         </div>

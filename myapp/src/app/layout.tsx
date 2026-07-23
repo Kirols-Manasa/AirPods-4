@@ -17,6 +17,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   metadataBase: new URL("https://airpods-4.vercel.app"),
 
+  verification: {
+    google: "6gbMHsyf9v0uC5eznZfuwomHsuDLYWiTj8nMCK6-GAE",
+  },
+
   title: {
     default: "AirPods 4 ",
     template: "%s | AirPods 4",
