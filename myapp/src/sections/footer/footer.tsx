@@ -115,7 +115,7 @@ export default function Footer() {
           className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pt-6 pb-10 sm:pt-8 sm:pb-14 lg:pt-10 lg:pb-20"
           style={{ willChange: "clip-path, opacity" }}
         >
-          <p className="text-[12px] text-[#6e6e73] m-0">© 2026 Kirols Manasa. All rights reserved.</p>
+          <p className="text-[12px] text-[#6e6e73] m-0">© 2026 Kirols Manasa🖤. All rights reserved.</p>
           <div className="flex gap-4 items-center">
             <a
               href="https://github.com/Kirols-Manasa/AirPods-4"
