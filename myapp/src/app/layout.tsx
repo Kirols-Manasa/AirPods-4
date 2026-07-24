@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+ import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -145,6 +145,10 @@ export default function RootLayout({
   return (
     <html lang="en" dir="ltr">
       <head>
+        {/* ← جديد: فرض اللغة الإنجليزية وتعطيل الترجمة التلقائية */}
+        <meta httpEquiv="Content-Language" content="en-US" />
+        <meta name="google" content="notranslate" />
+
         {/* ← جديد: Product schema */}
         <script
           type="application/ld+json"
