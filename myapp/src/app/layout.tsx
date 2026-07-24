@@ -26,34 +26,59 @@ export const metadata: Metadata = {
     template: "%s | AirPods 4",
   },
 
+  // ✅ Description طوله معقول — جملتين واضحتين
   description:
-    "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+    "AirPods 4 — an Apple-inspired landing page featuring H2 chip audio, spatial sound, and immersive scroll animations. Built with Next.js and T3 Stack.",
 
+  // ✅ Keywords خاصة بالموقع بس — مش منافسة Apple
   keywords: [
-    "AirPods 4",
-    "wireless earbuds",
-    "Apple H2 chip",
-    "spatial audio",
-    "noise cancellation",
-    "best earbuds 2026",
+    // 🎯 اسمك = صفر منافسة
+    "Kirols",
+    "Kirols portfolio",
+    "Kirols frontend developer",
+
+    // 🎯 AirPods + تقنيات = منافسة منخفضة جداً
+    "AirPods 4 landing page",
+    "AirPods 4 Next.js",
+    "AirPods 4 web design",
+    "AirPods 4 scroll animation",
+    "AirPods 4 spatial audio website",
+    "AirPods 4 H2 chip page",
+    "AirPods 4 interactive website",
+    "AirPods 4 Apple clone",
+    "AirPods 4 T3 stack",
+
+    // 🎯 تقنيات بس
+    "Apple product page Next.js",
+    "GSAP Apple animation Next.js",
   ],
 
+  // ✅ Favicon ظاهر في التاب — أهم حاجة
   icons: {
-    icon: "/images/favicon.ico",
+    icon: [
+      {
+        url: "https://airpods-4.vercel.app/images/favicon.ico",
+        type: "image/x-icon",
+      },
+    ],
+    shortcut: "https://airpods-4.vercel.app/images/favicon.ico",
+    apple: "https://airpods-4.vercel.app/images/favicon.ico",
   },
 
   openGraph: {
     title: "AirPods 4 — Iconic. Now Supersonic.",
     description:
-      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
+      "AirPods 4 — an Apple-inspired landing page featuring H2 chip audio, spatial sound, and immersive scroll animations. Built with Next.js and T3 Stack.",
     url: "https://airpods-4.vercel.app",
     siteName: "AirPods 4",
+    // ✅ URL كامل للصورة مش relative path
     images: [
       {
-        url: "/images/meta.webp",
+        url: "https://airpods-4.vercel.app/images/meta.webp",
         width: 1200,
         height: 630,
-        alt: "AirPods 4",
+        alt: "AirPods 4 Landing Page",
+        type: "image/webp",
       },
     ],
     locale: "en_US",
@@ -64,9 +89,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AirPods 4 — Iconic. Now Supersonic.",
     description:
-      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound — redesigned for the way you listen.",
-    images: ["/images/meta.webp"],
-    creator: "@airpods",
+      "AirPods 4 — an Apple-inspired landing page with H2 chip audio and immersive scroll animations. Built with Next.js.",
+    // ✅ URL كامل هنا كمان
+    images: ["https://airpods-4.vercel.app/images/meta.webp"],
   },
 
   robots: {
@@ -85,12 +110,10 @@ export const metadata: Metadata = {
 
   authors: [{ name: "Kirols" }],
 
-  // ← جديد: Canonical URL
   alternates: {
     canonical: "https://airpods-4.vercel.app",
   },
 
-  // ← جديد: Viewport optimization
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -98,11 +121,12 @@ export const metadata: Metadata = {
     userScalable: true,
   },
 
-  // ← جديد: Apple specific
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
   },
+
+  category: "technology",
 };
 
 // ============================
@@ -117,49 +141,83 @@ const inter = Inter({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // ← جديد: Product schema structured data
-  const productSchema = {
+  const websiteSchema = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "WebSite",
     name: "AirPods 4",
+    url: "https://airpods-4.vercel.app",
     description:
-      "AirPods 4 with the Apple H2 chip. Experience Personalized Spatial Audio, Adaptive EQ, and theater-like sound.",
+      "Apple-inspired AirPods 4 landing page with immersive scroll animations, built with Next.js and T3 Stack.",
+    author: {
+      "@type": "Person",
+      name: "Kirols",
+    },
+    inLanguage: "en-US",
+    potentialAction: {
+      "@type": "ViewAction",
+      target: "https://airpods-4.vercel.app",
+    },
+  };
+
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: "AirPods 4 Landing Page",
+    description:
+      "Apple-style product landing page for AirPods 4 with scroll-driven GSAP animations and spatial audio storytelling.",
+    creator: {
+      "@type": "Person",
+      name: "Kirols",
+    },
+    url: "https://airpods-4.vercel.app",
     image: "https://airpods-4.vercel.app/images/meta.webp",
-    brand: {
-      "@type": "Brand",
-      name: "Apple",
+    dateCreated: "2025",
+    genre: "Web Development Portfolio",
+    about: {
+      "@type": "Thing",
+      name: "AirPods 4",
+      description: "Apple AirPods 4 wireless earbuds with H2 chip",
     },
-    offers: {
-      "@type": "Offer",
-      price: "129",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "1500",
-    },
+    keywords: "AirPods 4, Next.js, T3 Stack, Tailwind CSS, GSAP, TypeScript, Apple design",
   };
 
   return (
     <html lang="en" dir="ltr">
       <head>
-        {/* ← جديد: فرض اللغة الإنجليزية وتعطيل الترجمة التلقائية */}
-        <meta httpEquiv="Content-Language" content="en-US" />
-        <meta name="google" content="notranslate" />
-
-        {/* ← جديد: Product schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+        {/* ✅ Favicon صريح في الـ head عشان يظهر في كل المتصفحات */}
+        <link
+          rel="icon"
+          href="https://airpods-4.vercel.app/images/favicon.ico"
+          type="image/x-icon"
+        />
+        <link
+          rel="shortcut icon"
+          href="https://airpods-4.vercel.app/images/favicon.ico"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="https://airpods-4.vercel.app/images/favicon.ico"
         />
 
-        {/* ← جديد: Preconnect لـ Google Fonts */}
+        {/* Schemas */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+        />
+
+        {/* ✅ Open Graph image صريح في الـ head كـ fallback */}
+        <meta property="og:image" content="https://airpods-4.vercel.app/images/meta.webp" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/webp" />
+
+        {/* Preconnect */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-
-        {/* ← جديد: DNS prefetch */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
       </head>
 
